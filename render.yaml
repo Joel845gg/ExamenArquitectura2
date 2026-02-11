@@ -3,7 +3,7 @@ services:
     name: purapasion-web
     env: docker
     dockerContext: Backend
-    dockerfilePath: Dockerfile
+    dockerfilePath: Backend/Dockerfile
     plan: free
     region: oregon
     envVars:
