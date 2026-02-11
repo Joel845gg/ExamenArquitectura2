@@ -15,6 +15,30 @@ DotNetEnv.Env.Load();
 // 1. Contexto de la base de datos (PostgreSQL con Supabase)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// FIX: Convertir URI de Render/Supabase (postgresql://) a Connection String de Npgsql (Host=...;...)
+if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgres"))
+{
+    try 
+    {
+        var databaseUri = new Uri(connectionString);
+        var userInfo = databaseUri.UserInfo.Split(':');
+        var npgsqlBuilder = new Npgsql.NpgsqlConnectionStringBuilder
+        {
+            Host = databaseUri.Host,
+            Port = databaseUri.Port > 0 ? databaseUri.Port : 5432,
+            Username = userInfo[0],
+            Password = userInfo[1],
+            Database = databaseUri.LocalPath.TrimStart('/')
+        };
+        connectionString = npgsqlBuilder.ToString();
+    }
+    catch (Exception ex)
+    {
+        // Fallback: Si falla el parseo, intentar usar el string original pero loguear el error
+        Console.WriteLine($"Error parseando connection string: {ex.Message}");
+    }
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
