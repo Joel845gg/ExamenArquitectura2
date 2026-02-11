@@ -3,7 +3,7 @@ import { agregarAlCarrito } from './carritoCompras.js';
 import { productosGlobal } from './estadoGlobal.js';
 
 // 1. Configuración de la API
-const API_URL = 'https://localhost:7272/api';
+const API_URL = '/api';
 
 // 2. Función principal para cargar productos
 export async function cargarProductos() {

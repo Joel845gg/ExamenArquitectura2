@@ -4,7 +4,7 @@ import { mostrarMensaje } from './funcionesWeb.js';
 import { productosGlobal, carrito, guardarCarrito, actualizarContadorGlobal } from './estadoGlobal.js';
 
 // 1. Configuración de la API
-const API_URL = 'https://localhost:7272/api';
+const API_URL = '/api';
 
 // 2. Función para mostrar los productos en el carrito
 export async function mostrarCarrito() {
